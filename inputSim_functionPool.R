@@ -1,7 +1,7 @@
 build_population_table <- function(year = "2018", variant = "1") {
 	# general demographic data for Germany from
 	# https://www.destatis.de/DE/ZahlenFakten/GesellschaftStaat/Bevoelkerung/Bevoelkerung.html 
-	bev <- read.csv("bev.csv", sep = ";")
+	bev <- read.csv("./_data/bev.csv", sep = ";")
 	bev <- bev[bev$Simulationsjahr == year,]
 	bev <- bev[bev$Variante == variant,]
 	
@@ -92,4 +92,43 @@ r_gender <- function(n, p1 = 0.5, values = c("m","w")) {
 	g.rand <- rbern(n, p1)
 	g.rand <- ifelse(g.rand==1, values[1], values[2])
 	return(g.rand)
+}
+
+r_body <- function(gender, age) {
+	# https://www.destatis.de/DE/ZahlenFakten/GesellschaftStaat/Gesundheit/GesundheitszustandRelevantesVerhalten/Tabellen/Koerpermasse.html
+	if (!((gender == "m") | (gender == "w")| (gender == 1)| (gender == -1))) {
+		stop("gender must be 'm','w','1' or '-1'")
+	}
+	
+	if ((gender == "m") | (gender == 1)) {
+		# Height
+		height.mean <- ifelse(age <= 19,
+														0.5+0.0689*age,
+														1.81-0.00145*age)
+		
+		height <- round(rnorm(1, height.mean, 0.075), 2)
+		
+		
+		#Body Mass Index
+		# (please never ask, how I came up with shape numbers)
+		beta1 = 0.05454*age+2.9090
+		beta2 = -0.0727*age+30.454
+		
+		bmi <- round(rbeta(1, beta1, beta2)*50+16, 1)
+		
+		weight <- round(bmi*height^2, 1)
+	} else {
+		height.mean <- ifelse(age <= 19,
+													0.5+0.0568*age,
+													1.70-0.00109*age)
+		
+		height <- round(rnorm(1, height.mean, 0.075),2)
+		
+		beta1 <- 0.05818*age+2.3363
+		beta2 <- -0.0727*age+31.454
+		
+		bmi <- round(rbeta(1, beta1, beta2)*50+16, 1)
+		weight <- round(bmi*height^2, 1)
+	}
+	return(c(height, weight, bmi))
 }

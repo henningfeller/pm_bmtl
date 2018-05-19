@@ -1,6 +1,5 @@
 # https://www.sciencedirect.com/science/article/pii/S0047259X09000876
 # Section 3.2
-
 rlkj <- function(dim, eta = 1) {
 	if (dim < 3) {
 		stop("Dimension must be equal or bigger than 3")
@@ -31,6 +30,10 @@ rlkj <- function(dim, eta = 1) {
 		r <- rbind(r, c(z,1))
 	}
 	
+	if (!is.positive.definite(r)) {
+		warning("generated matrix is not positive definite -> draw again")
+		r <- rlkj(dim,eta)
+	}
 	return(r)
 }
 

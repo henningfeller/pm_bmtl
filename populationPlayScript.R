@@ -71,3 +71,26 @@ points(0:99, age.raw.scaled, type = "l", col = "blue", lwd=2)
 
 sum(age.raw)
 View(age.raw)
+
+
+# playing with body mass indexes
+beta1 <- 6.7
+beta2 <- 26
+scale <- 50
+min <- 16
+bmi.rand <- round(rbeta(1000,beta1,beta2)*scale+min,1)
+	
+hist(bmi.rand, breaks = 25)
+sum(bmi.rand < 18.5) / 1000 # should be 4,4%
+sum((bmi.rand >= 18.5) & (bmi.rand < 25)) / 1000 # should be 75,1%
+sum((bmi.rand >= 25) & (bmi.rand < 30)) / 1000 # should be 16,4%
+sum(bmi.rand >= 30) / 1000 # should be 4,1%
+
+# males
+# go from (20, 4,29)
+# go to (75, 7,25)
+
+
+# females
+# go from (20, 3.5, 30)
+# to (75, 6.7, 26)

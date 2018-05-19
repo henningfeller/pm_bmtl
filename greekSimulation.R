@@ -2,15 +2,17 @@
 
 
 # install.packages("extraDistr")
-# install.packages("rethinking")
-library(extraDistr, rethinking, MASS)
+# install.packages("matrixcalc")
+library(extraDistr)
+library(MASS)
+library(matrixcalc)
 
 # define model parameters
 
 targetVariables = c("STK", "AMI", "ARF")
 targetVariables.n = length(targetVariables) # k
 
-inputVariables = c("Age", "Gender", "Weight", "Height", "BFP", "Pulse", "BP")
+inputVariables = c("gender", "age", "height", "weight", "bmi")
 inputVariables.n = length(inputVariables) # j
 
 ########################################################################
@@ -49,9 +51,12 @@ for (j in 1:inputVariables.n) {
 
 
 # finally beta (j x k matrix)
-beta <- mvrnorm(inputVariables.n,
-								rep(0, times=targetVariables.n), 
-								(r[1]^2*cov_Sigma[[1]]))
+beta <- matrix(NA, nrow=inputVariables.n, ncol=targetVariables.n)
+for (j in 1:inputVariables.n) {
+	beta[j,] <- mvrnorm(1,
+										  rep(0, times=targetVariables.n), 
+										  (r[j]^2*cov_Sigma[[j]]))
+}
 
 colnames(beta) <- targetVariables
 rownames(beta) <- inputVariables
