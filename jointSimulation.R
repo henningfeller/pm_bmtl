@@ -1,7 +1,18 @@
-n = 2002
+rm(ls = list())
+graphics.off()
 
-source("greekSimulation.R")
 source("inputSimulation.R")
+source("greekSimulation.R")
+
+inputData <- simulation_of_input_data(2000)
+
+model.parameters <- simulate_model_parameters(inputData,
+																							inputVariables = colnames(inputData[2:6]),
+																							targetVariables = c("STK", "AMI", "ARF") )
+
+alpha <- model.parameters[["alpha"]]
+beta <- model.parameters[["beta"]]
+
 
 logit.theta <- matrix(NA, nrow = n, ncol = targetVariables.n)
 theta <- matrix(NA, nrow = n, ncol = targetVariables.n)
