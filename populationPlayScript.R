@@ -94,3 +94,34 @@ sum(bmi.rand >= 30) / 1000 # should be 4,1%
 # females
 # go from (20, 3.5, 30)
 # to (75, 6.7, 26)
+
+
+########################################################################
+# Smoking
+# https://www.rauchfrei-info.de/informieren/verbreitung-des-rauchens/raucherquote-bei-erwachsenen/ 
+x <- 0:100
+y.m <- c(rep(0, times = 12),
+				 rep(NA, times = 6),
+				 rep(0.261, times = 3),
+				 rep(0.362, times = 4),
+				 rep(0.319, times = 5),
+				 rep(0.35, times = 10),
+				 rep(0.321, times = 10),
+				 rep(0.303, times = 10),
+				 rep(0.22, times = 5),
+				 rep(NA, times = 18),
+				 rep(0.1, times = 18))
+
+plot(x, y.m)
+			 
+y.m.model <- lm(y.m ~ poly(x,2), na.action = na.omit)
+
+for (i in x) {
+	y.m.sim[i] <- y.m.model$coefficients[1] +
+						 y.m.model$coefficients[2]*i^1 +
+						 y.m.model$coefficients[3]*i^2 
+						 # y.m.model$coefficients[4]*i^3 +
+						 # y.m.model$coefficients[5]*i^4
+}
+points(x, y.m.sim, type = "l", col = "red")			 
+			 

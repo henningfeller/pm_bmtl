@@ -132,3 +132,53 @@ r_body <- function(gender, age) {
 	}
 	return(c(height, weight, bmi))
 }
+
+r_smoking <- function(gender, age) {
+	# https://www.rauchfrei-info.de/informieren/verbreitung-des-rauchens/raucherquote-bei-erwachsenen/ 
+	
+	# set probability
+	if ((gender == 1) | (gender == "m")) {
+		prob <- ifelse(age < 12, 0,
+							ifelse(age < 18, 0.075,
+								ifelse(age <= 20, 0.261,
+									ifelse(age <= 24, 0.362,
+										ifelse(age <=29, 0.319,
+											ifelse(age <=39, 0.35,
+												ifelse(age <= 49, 0.321,
+													ifelse(age <= 59, 0.303,
+														ifelse(age <= 64, 0.22,
+																								0.125))))))))) # kids, don't do this at home
+	} else if ((gender == -1) | (gender == "w")) {
+		prob <- ifelse(age < 12, 0,
+							ifelse(age < 18, 0.05,
+								ifelse(age <= 20, 0.187,
+									 ifelse(age <= 24, 0.234,
+									 	 ifelse(age <=29, 0.341,
+									 		 ifelse(age <=39, 0.274,
+									 			 ifelse(age <= 49, 0.282,
+									 			 	 ifelse(age <= 59, 0.248,
+									 			 		 ifelse(age <= 64, 0.194,
+									 			 			 			             0.115)))))))))
+	} else {
+		warning("specify gender as 1/'m' or -1/''w'")
+	}	
+	
+	return(rbern(1, prob))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -46,6 +46,7 @@ simulation_of_input_data <- function(n) {
 	
 	for (i in 1:nrow(inputData)) {
 		inputData[i,c("height","weight","bmi")] <- r_body(inputData$gender[i], inputData$age[i])
+		inputData[i, "smoking"] <- r_smoking(inputData$gender[i], inputData$age[i])
 	}
 	
 	return(inputData)
