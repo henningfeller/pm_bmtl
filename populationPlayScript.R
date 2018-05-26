@@ -1,6 +1,6 @@
 	# general demographic data for Germany from
 	# https://www.destatis.de/DE/ZahlenFakten/GesellschaftStaat/Bevoelkerung/Bevoelkerung.html 
-	bev <- read.csv("bev.csv", sep = ";")
+	bev <- read.csv("./_data/bev.csv", sep = ";")
 	bev <- bev[bev$Simulationsjahr == "2018",]
 	bev <- bev[bev$Variante == "1",]
 	
@@ -42,7 +42,8 @@
 		bev[6,i] <- bev[2,i]*bev[4,i]	
 	}
 	
-plot(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
+# plot(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
+points(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
 points(0:99, bev[6,3:102], type = "l", lty = 2, col = "red")
 
 beta1 <- 3

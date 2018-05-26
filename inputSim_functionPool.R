@@ -166,6 +166,39 @@ r_smoking <- function(gender, age) {
 	return(rbern(1, prob))
 }
 
+standardize_continuous_input <- function(data_vector) {
+	
+	if (!( (is.vector(data_vector)) & (is.numeric(data_vector))) ) {
+		stop("Input is not a numerical vector")
+	}
+	
+	# Henning, you can come up with better names
+	in.sd <- sd(data_vector)
+	
+	standardized <- data_vector / (2 * in.sd)
+	
+	inbetween.mean <- mean(standardized)
+	
+	standardized <- standardized - inbetween.mean
+	
+	standardization_function <- function(data_vector) {
+		new_standardized <- (data_vector / (2*in.sd)) - inbetween.mean
+		return(new_standardized)
+	}
+	
+	backfunction <- function(standardized_vector) {
+		if  (!( (is.vector(standardized_vector)) & (is.numeric(standardized_vector))) ) {
+			stop("Input is not a numerical vector")
+		}
+		
+		normal_data <- (standardized_vector + inbetween.mean) * 2 * in.sd
+		return(normal_data)
+	}	
+	
+	return(list(standardized_data = standardized,
+							standardization_func = standardization_function,
+							back_standardization_func = backfunction))
+}
 
 
 
