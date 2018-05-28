@@ -40,13 +40,49 @@ simulation_of_input_data <- function(n) {
 	# points(0:99, (age.distr.m * cnt.m.sim / sum(age.distr.m)),
 	# 			 type = "l", col = "blue", lwd=2)
 	
+	
+	# Include additional risk factors
+	source("added_risk_factors.R")
+	
+	
 	inputData$height <- NA
 	inputData$weight <- NA
 	inputData$bmi <- NA
+	inputData$marital.status <- NA
+	inputData$alcohal.consumption <- NA
+	inputData$Glycemic.level <- NA
+	inputData$time.Since.Diabetes.Diagnosis <- NA
+	inputData$GP.Visits.in3months <- NA
+	inputData$Medication.adherence <- NA
+	inputData$self.rated.health.status <- NA
+	inputData$Mean.HbA1c <- NA
+	inputData$Mean.systolic.BP.in.mmHg <- NA
+	inputData$Mean.diastolic.BP.in.mmHg <- NA
+	inputData$Participation.in.DMP.DM <- NA
+	inputData$Cancer <- NA
+	inputData$Coronary.heart.disease <- NA
+	inputData$Depression <- NA
+	inputData$Heart.failure <- NA
+	inputData$Hypercholesterolemia <- NA
+	inputData$Hypertension <- NA
+	inputData$Intermittent.claudication <- NA
+	inputData$Nephropathy <- NA
+	inputData$Neuropathy <- NA
+	inputData$Retinopathy <- NA
+	inputData$Stroke <- NA
+	
+
 	
 	for (i in 1:nrow(inputData)) {
 		inputData[i,c("height","weight","bmi")] <- r_body(inputData$gender[i], inputData$age[i])
-		inputData[i, "smoking"] <- r_smoking(inputData$gender[i], inputData$age[i])
+		inputData[i,c("marital.status","alcohal.consumption")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
+		inputData[i,c("Glycemic.level", "time.Since.Diabetes.Diagnosis", "GP.Visits.in3months",
+		              "Medication.adherence", "self.rated.health.status")] <- clinical.risk.factors(inputData$gender[i])
+		inputData[i,c("Mean.HbA1c","Mean.systolic.BP.in.mmHg", "Mean.diastolic.BP.in.mmHg",
+		              "Participation.in.DMP.DM")] <- lab.reults.risk.factors(inputData$gender[i])
+		inputData[i,c(	"Cancer","Coronary.heart.disease","Depression","Heart.failure","Hypercholesterolemia","Hypertension",
+		               "Intermittent.claudication","Nephropathy","Neuropathy","Retinopathy",
+		               "Stroke")] <- related.diagnosis.factors(inputData$gender[i])
 	}
 	
 	return(inputData)
