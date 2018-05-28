@@ -30,7 +30,8 @@ simulation_of_input_data <- function(n) {
 																																											# they just improve runtime
 	
 	inputData$age[inputData$gender == -1] <- r_ages(cnt.w.sim, age.distr.w) # I knew the beta stuff for males
-																																					 # as I tested and played around with them
+
+	# as I tested and played around with them
 																																					 # for females I stick to standard uniform distr
 	
 	# plot draw vs. original distribution
@@ -48,6 +49,7 @@ simulation_of_input_data <- function(n) {
 	inputData$height <- NA
 	inputData$weight <- NA
 	inputData$bmi <- NA
+	inputData$smoking <- NA
 	inputData$marital.status <- NA
 	inputData$alcohal.consumption <- NA
 	inputData$Glycemic.level <- NA
@@ -75,6 +77,7 @@ simulation_of_input_data <- function(n) {
 	
 	for (i in 1:nrow(inputData)) {
 		inputData[i,c("height","weight","bmi")] <- r_body(inputData$gender[i], inputData$age[i])
+		inputData[i, "smoking"] <- r_smoking(inputData$gender[i], inputData$age[i])
 		inputData[i,c("marital.status","alcohal.consumption")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
 		inputData[i,c("Glycemic.level", "time.Since.Diabetes.Diagnosis", "GP.Visits.in3months",
 		              "Medication.adherence", "self.rated.health.status")] <- clinical.risk.factors(inputData$gender[i])
