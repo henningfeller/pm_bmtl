@@ -8,34 +8,34 @@ behavioural.risk.factors <- function(age,gender){
     stop("gender must be 'm','w' or '1','-1'")
     }
     
-    marr.values = c("Single/ widowed/ divorced","Married")
+    marr_values = c("Single/ widowed/ divorced","Married")
     
     ifelse (age < 19, 
-            marital.status <- 'Never Married',
+            maritalStatus <- 'Never Married',
             if ((gender == "m") | (gender == 1)) {
-              marital.status <- sample(marr.values, 1, replace=T, prob = c(0.181, 0.819))
+              maritalStatus <- sample(marr_values, 1, replace=T, prob = c(0.181, 0.819))
               
             }
             else {
-              marital.status <- sample(marr.values, 1, replace=T, prob = c(0.402, 0.598))
+              maritalStatus <- sample(marr_values, 1, replace=T, prob = c(0.402, 0.598))
             }
     )
     
 
-    alc.values = c('Abstainer',"Consumer")
+    alc_values = c('Abstainer',"Consumer")
     
     ifelse (age < 19, 
-            alcohal.consumption <- 'Abstainer',
+            alcohalConsumption <- 'Abstainer',
             if ((gender == "m") | (gender == 1)) {
-              alcohal.consumption <- sample(alc.values, 1, replace=T, prob = c(0.223, 0.777))
+              alcohalConsumption <- sample(alc_values, 1, replace=T, prob = c(0.223, 0.777))
               
             }
             else {
-              alcohal.consumption <- sample(alc.values, 1, replace=T, prob = c(0.542, 0.458))
+              alcohalConsumption <- sample(alc_values, 1, replace=T, prob = c(0.542, 0.458))
             }
     )
-    
-    return(c(marital.status, alcohal.consumption)) 
+  
+    return(c(maritalStatus, alcohalConsumption)) 
 }
 
 clinical.risk.factors <- function(gender) {
@@ -44,34 +44,36 @@ clinical.risk.factors <- function(gender) {
     stop("gender must be 'm','w' or '1','-1'")
   }
   
-  Gl.values = c('Good (≤6.4%)',"Moderate (6.5 - 7.4%)","Poor (≥7.5%)")
-  tg.Values = c("≤5 years","6 – 10 years","11 – 15 years","≥16 years")
-  GPV.values = c("≤1","2 – 3", "≥4")
-  MA.Values = c ("Good", "Moderate", "Poor")
-  HS.Values = c("very good","Good","Fair","Poor")
-  
+  Glvalues = c("Good","Moderate","Poor")
+  tgValues = c("less than 5 years"," six to ten years","Eleven to Fifteen years","Greater than sixteen years")
+  GPVvalues = c("one or less","two to three", "four or greater")
+  MA_Values = c ("Good", "Moderate", "Poor")
+  HSValues = c("very good","Good","Fair","Poor")
+  DMPvalue = c('Yes','No')
   
   
           if ((gender == "m") | (gender == 1)) {
              
-            Glycemic.level <- sample(Gl.values, 1, replace=T, prob = c(0.386, 0.383, 0.231))
-            time.Since.Diabetes.Diagnosis <- sample(tg.Values, 1, replace=T, prob = c(0.386,0.297,0.167,0.151))
-            GP.Visits.in3months <- sample(GPV.values, 1, replace=T, prob = c(0.417,0.393,0.191))
-            Medication.adherence <- sample(MA.Values, 1, replace=T, prob = c(0.756,0.219,0.025))
-            self.rated.health.status <- sample(HS.Values, 1, replace=T, prob = c(0.1,0.587,0.279,0.034))
+            GlycemicLevel <- sample(Glvalues, 1, replace=T, prob = c(0.386, 0.383, 0.231))
+            timeSinceDiabetesDiagnosis <- sample(tgValues, 1, replace=T, prob = c(0.386,0.297,0.167,0.151))
+            GPVisitsIn3months <- sample(GPVvalues, 1, replace=T, prob = c(0.417,0.393,0.191))
+            MedicationAdherence <- sample(MA_Values, 1, replace=T, prob = c(0.756,0.219,0.025))
+            selfRatedHealthStatus <- sample(HSValues, 1, replace=T, prob = c(0.1,0.587,0.279,0.034))
+            Participation_in_DMP_DM <- sample(DMPvalue, 1, replace=T, prob = c(0.794, 0.206))
             
           }
   
           else {
             
-            Glycemic.level <- sample(Gl.values, 1, replace=T, prob = c(0.411,	0.409,0.18))
-            time.Since.Diabetes.Diagnosis <- sample(tg.Values, 1, replace=T, prob = c(0.408,0.28,0.155,0.157))
-            GP.Visits.in3months <- sample(GPV.values, 1, replace=T, prob = c(0.379,0.415,0.206))
-            Medication.adherence <- sample(MA.Values, 1, replace=T, prob = c(0.77,0.204,0.026))
-            self.rated.health.status <- sample(HS.Values, 1, replace=T, prob = c(0.077,0.558,0.329,0.036))
+            GlycemicLevel <- sample(Glvalues, 1, replace=T, prob = c(0.411,	0.409,0.18))
+            timeSinceDiabetesDiagnosis <- sample(tgValues, 1, replace=T, prob = c(0.408,0.28,0.155,0.157))
+            GPVisitsIn3months <- sample(GPVvalues, 1, replace=T, prob = c(0.379,0.415,0.206))
+            MedicationAdherence <- sample(MA_Values, 1, replace=T, prob = c(0.77,0.204,0.026))
+            selfRatedHealthStatus <- sample(HSValues, 1, replace=T, prob = c(0.077,0.558,0.329,0.036))
+            Participation_in_DMP_DM <- sample(DMPvalue, 1, replace=T, prob = c(0.817, 0.183))
           }
   
-  return(c(Glycemic.level, time.Since.Diabetes.Diagnosis, GP.Visits.in3months,Medication.adherence, self.rated.health.status))
+  return(c(GlycemicLevel, timeSinceDiabetesDiagnosis, GPVisitsIn3months,MedicationAdherence, selfRatedHealthStatus,Participation_in_DMP_DM))
 }
 
 lab.reults.risk.factors <- function(gender){
@@ -79,20 +81,22 @@ lab.reults.risk.factors <- function(gender){
   if (!((gender == "m") | (gender == "w")| (gender == 1)| (gender == -1))) {
     stop("gender must be 'm','w' or '1','-1'")
   }
-  DMP.DM.value = c('Yes','No')
+  
+  
   if ((gender == "m") | (gender == 1)) {
-    Mean.HbA1c <- rnorm(1,6.9,1.1)
-    Mean.systolic.BP.in.mmHg <- rnorm(1,137.8, 18.1)
-    Mean.diastolic.BP.in.mmHg <- rnorm(79.4 ,10.2)
-    Participation.in.DMP.DM <- sample(DMP.DM.value, 1, replace=T, prob = c(0.794, 0.206))
+    Mean_HbA1c <- rnorm(1,6.9,1.1)
+    Mean_systolic_BP_in_mmHg <- rnorm(1,137.8, 18.1)
+    Mean_diastolic_BP_in_mmHg <- rnorm(79.4 ,10.2)
+    
   }
   else {
-    Mean.HbA1c <- rnorm(1,6.8,1.0)
-    Mean.systolic.BP.in.mmHg <-rnorm(1,136.8,19.0)
-    Mean.diastolic.BP.in.mmHg <- rnorm(1,79.6, 10.5)
-    Participation.in.DMP.DM <- sample(DMP.DM.value, 1, replace=T, prob = c(0.817, 0.183))
+    Mean_HbA1c <- rnorm(1,6.8,1.0)
+    Mean_systolic_BP_in_mmHg <-rnorm(1,136.8,19.0)
+    Mean_diastolic_BP_in_mmHg <- rnorm(1,79.6, 10.5)
+    
   }
-  return(c(Mean.HbA1c,Mean.systolic.BP.in.mmHg, Mean.diastolic.BP.in.mmHg,Participation.in.DMP.DM ))
+
+  return(c(Mean_HbA1c,Mean_systolic_BP_in_mmHg, Mean_diastolic_BP_in_mmHg ))
 }
 
 related.diagnosis.factors <- function(gender){
@@ -102,12 +106,12 @@ related.diagnosis.factors <- function(gender){
   value = c('Yes','No')
   if ((gender == "m") | (gender == 1)) {
     Cancer <- sample(value, 1, replace=T, prob = c(0.101,	0.899))
-    Coronary.heart.disease <- sample(value, 1, replace=T, prob = c(0.236,	0.764))
+    Cor_heart_dis <- sample(value, 1, replace=T, prob = c(0.236,	0.764))
     Depression <- sample(value, 1, replace=T, prob = c(0.107,	0.893))
-    Heart.failure <- sample(value, 1, replace=T, prob = c(0.12,	0.88))
+    Heart_fail <- sample(value, 1, replace=T, prob = c(0.12,	0.88))
     Hypercholesterolemia <- sample(value, 1, replace=T, prob = c(0.562,	0.438))
     Hypertension <- sample(value, 1, replace=T, prob = c(0.783,	0.217))
-    Intermittent.claudication <- sample(value, 1, replace=T, prob = c(0.154,	0.846))
+    Intermittent_claudication <- sample(value, 1, replace=T, prob = c(0.154,	0.846))
     Nephropathy <- sample(value, 1, replace=T, prob = c(0.122,	0.878))
     Neuropathy <- sample(value, 1, replace=T, prob = c(0.231,	0.769))
     Retinopathy <- sample(value, 1, replace=T, prob = c(0.082,	0.918))
@@ -115,18 +119,18 @@ related.diagnosis.factors <- function(gender){
   }
   else {
     Cancer <- sample(value, 1, replace=T, prob = c(0.094,	0.906))
-    Coronary.heart.disease <- sample(value, 1, replace=T, prob = c(0.128,	0.872))
+    Cor_heart_dis <- sample(value, 1, replace=T, prob = c(0.128,	0.872))
     Depression <- sample(value, 1, replace=T, prob = c(0.186,	0.814))
-    Heart.failure <- sample(value, 1, replace=T, prob = c(0.123,	0.877))
+    Heart_fail <- sample(value, 1, replace=T, prob = c(0.123,	0.877))
     Hypercholesterolemia <- sample(value, 1, replace=T, prob = c(0.578,	0.422))
     Hypertension <- sample(value, 1, replace=T, prob = c(0.781,	0.219))
-    Intermittent.claudication <- sample(value, 1, replace=T, prob = c(0.069,	0.931))
+    Intermittent_claudication <- sample(value, 1, replace=T, prob = c(0.069,	0.931))
     Nephropathy <- sample(value, 1, replace=T, prob = c(0.086, 0.914))
     Neuropathy <- sample(value, 1, replace=T, prob = c(0.2,	0.8))
     Retinopathy <- sample(value, 1, replace=T, prob = c(0.067,	0.933))
     Stroke <- sample(value, 1, replace=T, prob = c(0.042,	0.958))
   }
   
-  return(c(Cancer,Coronary.heart.disease,Depression,Heart.failure,Hypercholesterolemia,Hypertension,
-         Intermittent.claudication,Nephropathy,Neuropathy,Retinopathy,Stroke))
+  return(c(Cancer,Cor_heart_dis,Depression,Heart_fail,Hypercholesterolemia,Hypertension,
+         Intermittent_claudication,Nephropathy,Neuropathy,Retinopathy,Stroke))
 }
