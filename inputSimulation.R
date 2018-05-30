@@ -30,9 +30,9 @@ simulation_of_input_data <- function(n) {
 																																											# they just improve runtime
 	
 	inputData$age[inputData$gender == -1] <- r_ages(cnt.w.sim, age.distr.w) # I knew the beta stuff for males
-
+																																					 # as I tested and played around with them
 	# as I tested and played around with them
-																																					 # for females I stick to standard uniform distr
+	
 	
 	# plot draw vs. original distribution
 	# hist(inputData$age[inputData$gender == 1], breaks = 101,
@@ -50,24 +50,24 @@ simulation_of_input_data <- function(n) {
 	inputData$weight <- NA
 	inputData$bmi <- NA
 	inputData$smoking <- NA
-	inputData$marital.status <- NA
-	inputData$alcohal.consumption <- NA
-	inputData$Glycemic.level <- NA
-	inputData$time.Since.Diabetes.Diagnosis <- NA
-	inputData$GP.Visits.in3months <- NA
-	inputData$Medication.adherence <- NA
-	inputData$self.rated.health.status <- NA
-	inputData$Mean.HbA1c <- NA
-	inputData$Mean.systolic.BP.in.mmHg <- NA
-	inputData$Mean.diastolic.BP.in.mmHg <- NA
-	inputData$Participation.in.DMP.DM <- NA
+	inputData$maritalStatus <- NA
+	inputData$alcohalConsumption <- NA
+	inputData$GlycemicLevel <- NA
+	inputData$timeSinceDiabetesDiagnosis <- NA
+	inputData$GPVisitsIn3months <- NA
+	inputData$MedicationAdherence <- NA
+	inputData$selfRatedHealthStatus <- NA
+	inputData$Mean_HbA1c <- NA
+	inputData$Mean_systolic_BP_in_mmHg <- NA
+	inputData$Mean_diastolic_BP_in_mmHg <- NA
+	inputData$Participation_in_DMP_DM <- NA
 	inputData$Cancer <- NA
-	inputData$Coronary.heart.disease <- NA
+	inputData$Cor_heart_dis <- NA
 	inputData$Depression <- NA
-	inputData$Heart.failure <- NA
+	inputData$Heart_fail <- NA
 	inputData$Hypercholesterolemia <- NA
 	inputData$Hypertension <- NA
-	inputData$Intermittent.claudication <- NA
+	inputData$Intermittent_claudication <- NA
 	inputData$Nephropathy <- NA
 	inputData$Neuropathy <- NA
 	inputData$Retinopathy <- NA
@@ -78,16 +78,13 @@ simulation_of_input_data <- function(n) {
 	for (i in 1:nrow(inputData)) {
 		inputData[i,c("height","weight","bmi")] <- r_body(inputData$gender[i], inputData$age[i])
 		inputData[i, "smoking"] <- r_smoking(inputData$gender[i], inputData$age[i])
-		inputData[i,c("marital.status","alcohal.consumption")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
-		inputData[i,c("Glycemic.level", "time.Since.Diabetes.Diagnosis", "GP.Visits.in3months",
-		              "Medication.adherence", "self.rated.health.status")] <- clinical.risk.factors(inputData$gender[i])
-		inputData[i,c("Mean.HbA1c","Mean.systolic.BP.in.mmHg", "Mean.diastolic.BP.in.mmHg",
-		              "Participation.in.DMP.DM")] <- lab.reults.risk.factors(inputData$gender[i])
-		inputData[i,c(	"Cancer","Coronary.heart.disease","Depression","Heart.failure","Hypercholesterolemia","Hypertension",
-		               "Intermittent.claudication","Nephropathy","Neuropathy","Retinopathy",
-		               "Stroke")] <- related.diagnosis.factors(inputData$gender[i])
+		inputData[i,c("maritalStatus","alcohalConsumption")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
+		inputData[i,c("GlycemicLevel", "timeSinceDiabetesDiagnosis", "GPVisitsIn3months","MedicationAdherence", "selfRatedHealthStatus",
+									"Participation_in_DMP_DM")] <- clinical.risk.factors(inputData$gender[i])
+		inputData[i,c("Mean_HbA1c","Mean_systolic_BP_in_mmHg", "Mean_diastolic_BP_in_mmHg")] <- lab.reults.risk.factors(inputData$gender[i])
+		inputData[i,c(	"Cancer","Cor_heart_dis","Depression","Heart_fail","Hypercholesterolemia","Hypertension","Intermittent_claudication",
+									 "Nephropathy","Neuropathy","Retinopathy", "Stroke")] <- related.diagnosis.factors(inputData$gender[i])
 	}
 	
 	return(inputData)
 }
-
