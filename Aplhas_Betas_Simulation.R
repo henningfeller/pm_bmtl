@@ -1,6 +1,6 @@
 alphas_betas <-function(no_of_input_parameters,no_tasks){
   
-  library(LaplacesDemon) # for Cauchy distribution sampling
+	library(LaplacesDemon) # for Cauchy distribution sampling
   library(stats) # for the cauchy distribution sampling
   library(MASS) # for MVN sampling
   
@@ -8,7 +8,7 @@ alphas_betas <-function(no_of_input_parameters,no_tasks){
   generated_Parameter_Psi <- rhalfcauchy(1000,1)
   
   #plot(generated_Parameter_Psi)
- # boxplot(generated_Parameter_Psi, ylim=c(0,5))
+ 	# boxplot(generated_Parameter_Psi, ylim=c(0,5))
   
   Parameter_Psi <- mean(generated_Parameter_Psi)
   
