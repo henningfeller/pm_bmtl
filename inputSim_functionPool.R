@@ -201,17 +201,17 @@ standardize_continuous_input <- function(data_vector) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+one_hot_encoding <-function(df){
+	del <- list()
+	for (i in 1:length(as.list( names(df)))){
+		if (is.character(df[,i]) == "TRUE"){
+			for(unique_value in unique(df[,i])){
+				df[paste(colnames(df)[i], unique_value, sep = ".")] <- ifelse(df[,i] == unique_value, 1, 0)
+			}
+			del <- append(del,colnames(df)[i])
+		}
+	}
+	df <- df[,!names(df) %in% del]
+	
+	return(df)
+}
