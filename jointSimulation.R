@@ -1,6 +1,7 @@
 rm(list = ls())
 graphics.off()
 
+# install.packages("dplyr")
 library(dplyr)
 
 source("inputSimulation.R")
@@ -50,3 +51,4 @@ for (j in 1:n) { # patient
 	}
 }
 
+y
