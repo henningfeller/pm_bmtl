@@ -8,13 +8,10 @@ library(MASS)
 library(matrixcalc)
 
 # define model parameters
-simulate_model_parameters <- function(data,
-																			inputVariables,
+simulate_model_parameters <- function(inputVariables,
 																			targetVariables,
 																			alpha.location = 0,
 																			alpha.scale = 10,
-																			tau.scale = 1,
-																			psi.scale = 1,
 																			sigma.scale = 2.5,
 																			omega.scale = 1) {
 	
@@ -31,8 +28,8 @@ simulate_model_parameters <- function(data,
 	########################################################################
 	### BETA
 	# Shrinkage Scalar r (via psi and tau)
-	psi <- rhcauchy(1, psi.scale)
-	tau <- rhcauchy(inputVariables.n, tau.scale)
+	psi <- rhcauchy(1, 1)
+	tau <- rhcauchy(inputVariables.n, 1)
 	r <- tau * psi # length j
 	
 	# standard deviation

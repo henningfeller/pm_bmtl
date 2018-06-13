@@ -30,8 +30,7 @@ stdInputData <- one_hot_encoding(stdInputData)
 ## Applyting the standardized data to the simulated parameters to produce Ys:
 inputVariables = colnames(stdInputData)[-1];
 targetVariables = c("STK", "AMI", "ARF")
-model.parameters <- simulate_model_parameters(stdInputData,
-																							inputVariables,
+model.parameters <- simulate_model_parameters(inputVariables,
 																							targetVariables )
 
 alpha <- model.parameters[["alpha"]]
