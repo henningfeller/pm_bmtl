@@ -50,8 +50,8 @@ simulation_of_input_data <- function(n) {
 	inputData$weight <- NA
 	inputData$bmi <- NA
 	inputData$smoking <- NA
-	inputData$maritalStatus <- NA
-	inputData$alcohalConsumption <- NA
+	inputData$married<- NA
+	inputData$alcohol <- NA
 	# inputData$GlycemicLevel <- NA
 	# inputData$timeSinceDiabetesDiagnosis <- NA
 	# inputData$GPVisitsIn3months <- NA
@@ -78,7 +78,7 @@ simulation_of_input_data <- function(n) {
 	for (i in 1:nrow(inputData)) {
 		inputData[i,c("height","weight","bmi")] <- r_body(inputData$gender[i], inputData$age[i])
 		inputData[i, "smoking"] <- r_smoking(inputData$gender[i], inputData$age[i])
-		inputData[i,c("maritalStatus","alcohalConsumption")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
+		inputData[i,c("married","alcohol")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
 		# inputData[i,c("GlycemicLevel", "timeSinceDiabetesDiagnosis", "GPVisitsIn3months","MedicationAdherence", "selfRatedHealthStatus",
 		# 							"Participation_in_DMP_DM")] <- clinical.risk.factors(inputData$gender[i])
 		# inputData[i,c("Mean_HbA1c","Mean_systolic_BP_in_mmHg", "Mean_diastolic_BP_in_mmHg")] <- lab.reults.risk.factors(inputData$gender[i])

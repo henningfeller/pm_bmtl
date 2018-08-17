@@ -8,10 +8,10 @@ behavioural.risk.factors <- function(age,gender){
     stop("gender must be 'm','w' or '1','-1'")
     }
     
-    marr_values = c("Single/ widowed/ divorced","Married")
+    marr_values = c("No","Yes")
     
     ifelse (age < 19, 
-            maritalStatus <- 'Never Married',
+            maritalStatus <- 'Never',
             if ((gender == "m") | (gender == 1)) {
               maritalStatus <- sample(marr_values, 1, replace=T, prob = c(0.181, 0.819))
               

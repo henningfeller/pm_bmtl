@@ -2,6 +2,8 @@ rm(list = ls())
 graphics.off()
 
 # install.packages("dplyr")
+# install.packages("extraDistr")
+# install.packages("matrixcalc")
 library(dplyr)
 
 source("inputSimulation.R")
