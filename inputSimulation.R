@@ -52,26 +52,26 @@ simulation_of_input_data <- function(n) {
 	inputData$smoking <- NA
 	inputData$maritalStatus <- NA
 	inputData$alcohalConsumption <- NA
-	inputData$GlycemicLevel <- NA
-	inputData$timeSinceDiabetesDiagnosis <- NA
-	inputData$GPVisitsIn3months <- NA
-	inputData$MedicationAdherence <- NA
-	inputData$selfRatedHealthStatus <- NA
-	inputData$Mean_HbA1c <- NA
-	inputData$Mean_systolic_BP_in_mmHg <- NA
-	inputData$Mean_diastolic_BP_in_mmHg <- NA
-	inputData$Participation_in_DMP_DM <- NA
-	inputData$Cancer <- NA
-	inputData$Cor_heart_dis <- NA
-	inputData$Depression <- NA
-	inputData$Heart_fail <- NA
-	inputData$Hypercholesterolemia <- NA
-	inputData$Hypertension <- NA
-	inputData$Intermittent_claudication <- NA
-	inputData$Nephropathy <- NA
-	inputData$Neuropathy <- NA
-	inputData$Retinopathy <- NA
-	inputData$Stroke <- NA
+	# inputData$GlycemicLevel <- NA
+	# inputData$timeSinceDiabetesDiagnosis <- NA
+	# inputData$GPVisitsIn3months <- NA
+	# inputData$MedicationAdherence <- NA
+	# inputData$selfRatedHealthStatus <- NA
+	# inputData$Mean_HbA1c <- NA
+	# inputData$Mean_systolic_BP_in_mmHg <- NA
+	# inputData$Mean_diastolic_BP_in_mmHg <- NA
+	# inputData$Participation_in_DMP_DM <- NA
+	# inputData$Cancer <- NA
+	# inputData$Cor_heart_dis <- NA
+	# inputData$Depression <- NA
+	# inputData$Heart_fail <- NA
+	# inputData$Hypercholesterolemia <- NA
+	# inputData$Hypertension <- NA
+	# inputData$Intermittent_claudication <- NA
+	# inputData$Nephropathy <- NA
+	# inputData$Neuropathy <- NA
+	# inputData$Retinopathy <- NA
+	# inputData$Stroke <- NA
 	
 
 	
@@ -79,11 +79,11 @@ simulation_of_input_data <- function(n) {
 		inputData[i,c("height","weight","bmi")] <- r_body(inputData$gender[i], inputData$age[i])
 		inputData[i, "smoking"] <- r_smoking(inputData$gender[i], inputData$age[i])
 		inputData[i,c("maritalStatus","alcohalConsumption")] <- behavioural.risk.factors(inputData$age[i],inputData$gender[i])
-		inputData[i,c("GlycemicLevel", "timeSinceDiabetesDiagnosis", "GPVisitsIn3months","MedicationAdherence", "selfRatedHealthStatus",
-									"Participation_in_DMP_DM")] <- clinical.risk.factors(inputData$gender[i])
-		inputData[i,c("Mean_HbA1c","Mean_systolic_BP_in_mmHg", "Mean_diastolic_BP_in_mmHg")] <- lab.reults.risk.factors(inputData$gender[i])
-		inputData[i,c(	"Cancer","Cor_heart_dis","Depression","Heart_fail","Hypercholesterolemia","Hypertension","Intermittent_claudication",
-									 "Nephropathy","Neuropathy","Retinopathy", "Stroke")] <- related.diagnosis.factors(inputData$gender[i])
+		# inputData[i,c("GlycemicLevel", "timeSinceDiabetesDiagnosis", "GPVisitsIn3months","MedicationAdherence", "selfRatedHealthStatus",
+		# 							"Participation_in_DMP_DM")] <- clinical.risk.factors(inputData$gender[i])
+		# inputData[i,c("Mean_HbA1c","Mean_systolic_BP_in_mmHg", "Mean_diastolic_BP_in_mmHg")] <- lab.reults.risk.factors(inputData$gender[i])
+		# inputData[i,c(	"Cancer","Cor_heart_dis","Depression","Heart_fail","Hypercholesterolemia","Hypertension","Intermittent_claudication",
+		# 							 "Nephropathy","Neuropathy","Retinopathy", "Stroke")] <- related.diagnosis.factors(inputData$gender[i])
 	}
 	
 	return(inputData)

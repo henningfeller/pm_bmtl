@@ -6,6 +6,7 @@ library(dplyr)
 
 source("inputSimulation.R")
 source("greekSimulation.R")
+source("themeLeuphana.R")
 
 
 n = 2000 #Number of patients
@@ -50,4 +51,9 @@ for (j in 1:n) { # patient
 	}
 }
 
-y
+colnames(y) <- targetVariables
+
+# manual check of data
+apply(y, 2, sum)
+
+finalDataset <- cbind(inputData, y)

@@ -1,0 +1,84 @@
+
+model {
+	########################################################################	
+	# Variables:
+	# k:  				An adverse health event
+	# j: 					A predictor
+	# i:					A patient
+	# Nx:					Number of predictors
+	# Ny: 				Number of adverse health events
+	# Ntotal:			Number of patients
+	# y[i,k]: 	 	Patient i had adverse health event k
+	# x[i,j];			Predictor value j of patient i
+	# alpha[k]:  	Bias-Regression-Coefficient of adverse health event k
+	# beta[j,k]: 	Regression Coefficient for predictor j for adverse health event k
+	########################################################################
+
+
+
+	# for ( k in 1:(NOutcome*Ntotal) ) {
+	# 	y[k] = dbern(theta[k])
+	# }
+	
+
+	########################################################################
+	# Defining the likelihood
+	for ( i in 1:Ntotal ) { # for each patient
+		for ( k in 1:Ny ) { # for each event
+			y[i,k] ~ dbern( theta[i, k] )
+		
+			# Probability based on logistic regression
+			theta[i,k] <- ilogit( alpha[k] + sum( beta[1:Nx,k] * x[i, 1:Nx] ) )	
+		}
+	}
+	########################################################################
+
+	
+
+	########################################################################
+	# Defining the priors for the alphas:
+	# Cauchy distribution is the same as a T distr with k=1 degrees of freedom
+	# https://en.wikipedia.org/wiki/Cauchy_distribution#Related_distributions
+	
+	for (k in 1:Ny){ # for each event
+		alpha[k] ~ dt(0, 10, 1) 
+	}
+	########################################################################
+	
+
+	
+	########################################################################
+	# Defining the priors for the betas
+	for (j in 1:Nx){ # for each predictor
+		### TODO beta must be drawn from MV-Norm
+		# for (n in 1:Ndim){
+		# 	beta[m,n] ~ dmnorm(0,pow(r[n],2)*SIGMA[n])
+		# }
+
+		### as SIGMA is not yet defined, a boring normal
+		for (k in 1:Ny) { # for each outcome
+			beta[j,k] ~ dnorm(0, (1/2)^2)
+		}
+	}
+	########################################################################
+	
+
+
+	########################################################################
+	# Defining the formulae for 'r' and it's priors
+	for (j in 1:Nx){
+		r[j] = tau[j] * psi
+		
+		# Half cauchy are truncated cauchy dist
+		# https://stackoverflow.com/questions/34935606/cauchy-prior-in-jags/34951349
+		tau[j] ~ dt(0, 1, 1)T(0,) 
+	}
+	
+	psi ~ dt(0, 1, 1)T(0,)
+	########################################################################
+
+	### TODO:
+	### SIGMA = diag(sigma[j]) %*% OMEGA[j] %*% diag(sigma[j])
+	### sigma ~ dt(0, 2.5, 1)
+	### OMEGA ~ lkj
+}
