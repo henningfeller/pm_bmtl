@@ -30,27 +30,6 @@ mcmcInputData = list(
 ########################################################################
 # THE MODEL
 ########################################################################
-# modelString = "
-# 	model {
-# 		for (i in 1:Ntotal) {
-# 			# Outcome of adverse health event is bernoulli distributed
-# 			# respective a personal probability (i is a patient)
-# 			
-# 			ySTK[i] ~ dbern( thetaSTK[i] )
-# 
-# 			
-# 			# Probability based on logistic regression
-# 			thetaSTK[i] <- ilogit( alphaSTK + sum( betaSTK[1:Nx] * x[i, 1:Nx] ) )
-# 		}
-# 		
-# 		# Regression Coefficients alpha and beta
-# 		alphaSTK ~ dnorm(0, (1/2)^2)
-# 		for (j in 1:Nx) {
-# 			betaSTK[j] ~ dnorm(0, (1/2)^2)
-# 		}
-# 	}
-# "
-
 modelString <- "
 model {
 	########################################################################	
@@ -141,7 +120,6 @@ writeLines( modelString , con="TEMPmodel.txt" )
 ########################################################################
 # Sampling
 ########################################################################
-
 parametersIn <- c("alpha", "beta", "psi", "tau", "r")
 
 runJagsOut  <- run.jags(data = mcmcInputData,
@@ -149,12 +127,16 @@ runJagsOut  <- run.jags(data = mcmcInputData,
 												monitor = parametersIn,
 											  method = "parallel",
 												n.chains = 3,
-												adapt = 10,
-												burnin = 10,
-												sample = 100, # per chain
+												adapt = 1000,
+												burnin = 4000,
+												sample = 10000, # per chain
 												thin = 2 # save only each third step
 												)
 
+
+########################################################################
+# DIAGNOSIS
+########################################################################
 mcmcSamples <- as.mcmc.list(runJagsOut)
 
 # Giving proper names
