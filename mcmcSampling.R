@@ -130,7 +130,7 @@ runJagsOut  <- run.jags(data = mcmcInputData,
 												adapt = 1000,
 												burnin = 4000,
 												sample = 10000, # per chain
-												thin = 2 # save only each third step
+												thin = 4 # save only each n'th step
 												)
 
 
