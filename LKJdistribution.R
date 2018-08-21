@@ -1,6 +1,7 @@
 # https://www.sciencedirect.com/science/article/pii/S0047259X09000876
 # Section 3.2
 rlkj <- function(dim, eta = 1) {
+	require(matrixcalc)
 	if (dim < 3) {
 		stop("Dimension must be equal or bigger than 3")
 	}
@@ -18,7 +19,7 @@ rlkj <- function(dim, eta = 1) {
 		
 		y <- rbeta(1, k/2, beta)
 		
-		u <- runif_spere(1,k)
+		u <- runif_sphere(1,k)
 		
 		w <- sqrt(y) * u
 		
@@ -38,11 +39,12 @@ rlkj <- function(dim, eta = 1) {
 }
 
 # https://stats.stackexchange.com/questions/7977/how-to-generate-uniformly-distributed-points-on-the-surface-of-the-3-d-unit-sphe
-runif_spere <- function(n, dim) {
+runif_sphere <- function(n, dim) {
 	r <- matrix(NA, nrow = n, ncol = dim)
 	
 	for (i in 1:n) {
 		q = 0
+		#r[i,] <- runif(dim, -1, 1)
 		r[i,] <- rnorm(dim)
 		
 		qsquare <- sum(r[i,]^2)

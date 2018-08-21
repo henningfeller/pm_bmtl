@@ -79,7 +79,6 @@ r_ages <- function(n,
 }
 
 r_gender <- function(n, p1 = 0.5, values = c("m","w")) {
-  
   g.rand <- sample(values, n, replace=T, prob = c(p1,1-p1)) # Changed this because the package with the rbern function was not available for latest versions of R for 
   g.rand <- ifelse(g.rand==1, values[1], values[2])
   return(g.rand)

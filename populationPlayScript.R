@@ -10,8 +10,8 @@
 	colnames(bev) <- c("indicator", "mw", 0:99)
 	bev
 
-	plot(0:99, bev[1,3:102], type = "l", col = "blue")
-	points(0:99, bev[2,3:102], type = "l", col = "red")
+	# plot(0:99, bev[1,3:102], type = "l", col = "blue")
+	# points(0:99, bev[2,3:102], type = "l", col = "red")
 	
 	# some information on diabetes prevalance from
 	# https://www.rki.de/SharedDocs/Bilder/GBE/Gesundheitsthemen/Infografik_Diabetes_2016.gif?__blob=normal&v=5
@@ -42,18 +42,33 @@
 		bev[6,i] <- bev[2,i]*bev[4,i]	
 	}
 	
-# plot(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
-points(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
-points(0:99, bev[6,3:102], type = "l", lty = 2, col = "red")
+# # plot(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
+# points(0:99, bev[5,3:102], type = "l", lty = 2, col = "blue", ylim=c(0,200), xlab = "age", ylab = "Diabetes Patients (*1000)")
+# points(0:99, bev[6,3:102], type = "l", lty = 2, col = "red")
 
-beta1 <- 3
-beta2 <- 1.7
+bevNew <- t(bev)
+bevNew <- bevNew[3:nrow(bevNew),]
+bevNew <- cbind(0:99, bevNew)
+colnames(bevNew) <- c("age","pop.m", "pop.w", "dShare.m", "dShare.w", "dTotal.m", "dTotal.w")
 
-db <- dbeta(seq(0, 1, by=0.01), beta1, beta2)
-c <- max(bev[5:6,3:102]) * 1.1 / max(db)
-db <- db*c
+bevNew <- as.data.frame(bevNew)
+bevNew$age <- unfactor(bevNew$age)
+bevNew$pop.m <- unfactor(bevNew$pop.m)
+bevNew$pop.w <- unfactor(bevNew$pop.w)
+bevNew$dShare.m <- unfactor(bevNew$dShare.m)
+bevNew$dShare.w <- unfactor(bevNew$dShare.w)
+bevNew$dTotal.m <- unfactor(bevNew$dTotal.m)
+bevNew$dTotal.w <- unfactor(bevNew$dTotal.w)
 
-points(0:100, db, type = "l")
+ggplot(bevNew, aes(x = age)) + 
+	geom_line(aes(y=pop.m), col = leuphanaPalette$colQualitative$blue1, size = 1) + 
+	geom_line(aes(y=pop.w), col = leuphanaPalette$colQualitative$red1, size = 1) +
+	geom_line(aes(y=dTotal.m), col = leuphanaPalette$colQualitative$blue1, lty = 2, size = 1) +
+	geom_line(aes(y=dTotal.w), col = leuphanaPalette$colQualitative$red1, lty = 2, size = 1) +
+	xlab("Age")+
+	ylab("Population (*1000)")+
+	theme_leuphana()
+
 
 
 # sampling using function 
@@ -65,7 +80,25 @@ age.rand <- r_ages(2000, age.distr = age.distr, beta.shape1 = 3, beta.shape2 = 1
 
 #scale original count data
 age.raw <- bev[5,3:102]
-age.raw.scaled <-age.raw * n / sum(age.raw)
+age.raw.scaled <- age.raw * n / sum(age.raw)
+
+
+ageOrig <- data.frame(age = 0:99)
+ageOrig$cnt <- as.numeric(age.raw.scaled)
+	
+ageData <- as.data.frame(age.rand)
+ageData$age.rand <- unfactor(ageData$age.rand)
+
+colnames(ageData) <- c("randomAge")
+
+ggplot(data = ageData, aes(randomAge)) +
+	geom_histogram(fill = leuphanaPalette$fillQualitative$red1,
+								 col = leuphanaPalette$theme$grey, binwidth = 1) +
+	theme_leuphana() +
+	xlab("Age") +
+	ylab("Diabetes Patients (*1000)") +
+	geom_line(data = ageOrig, aes(x = age, y = cnt), col = leuphanaPalette$colQualitative$blue2,size = 1.5, lty=2)
+
 
 hist(age.rand, breaks = 101)
 points(0:99, age.raw.scaled, type = "l", col = "blue", lwd=2)
