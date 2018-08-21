@@ -7,8 +7,6 @@ fileNameRoot="stanOut/"
 source("mcmc/DBDA2E-utilities.R")
 library(rstan)
 
-# Note: x requires constant 1 in first column
-
 # Specify model:
 modelString = "
 data {
@@ -59,8 +57,18 @@ model {
 		beta[j] ~ multi_normal( zeromean, r[j]^2*Sigma[j] ) ;
 	}
 	
-	y ~ bernoulli_logit(alpha + x * beta ) ; // does this work?
-	
+	real utility;
+
+	for (i in 1:N) {
+		for (k in 1:K) {
+			utility = alpha[k] ;
+			for (j in 1:J) {
+				utility = utility + x[i,j] * beta[j][k]
+			}
+			
+			y[i,k] ~ bernoulli_logit( utility )
+		}
+	}
 }
 " # close quote for modelString
 
