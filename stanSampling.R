@@ -56,17 +56,25 @@ model {
 		
 		beta[j] ~ multi_normal( zeromean, r[j]^2*Sigma[j] ) ;
 	}
-	
-	real utility;
 
+	for (k in 1:K) {
+		alpha[k] ~ cauchy(0, 10) ;
+	}
+	
+	// declaration of utility
+	real utility;
+	
+	// STAN loves vectorizations
+	// So sadistically we are not using it yet
+	// Poor Stan :( 
 	for (i in 1:N) {
 		for (k in 1:K) {
 			utility = alpha[k] ;
 			for (j in 1:J) {
-				utility = utility + x[i,j] * beta[j][k]
+				utility = utility + x[i,j] * beta[j][k] ;
 			}
 			
-			y[i,k] ~ bernoulli_logit( utility )
+			y[i,k] ~ bernoulli_logit( utility ) ;
 		}
 	}
 }
