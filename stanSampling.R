@@ -6,6 +6,25 @@ if (!exists("finalDataset")) {
 	source("jointSimulation.R")
 }
 
+y <- as.matrix(finalDataset[,c("STK", "AMI", "ARF")])
+x <- as.matrix(finalDataset[,2:(ncol(finalDataset)-3)])
+
+x <- finalDataset[,2:(ncol(finalDataset)-3)]
+x <- standardize_mean0_var1(x)
+x <- one_hot_encoding(x)
+x <- as.matrix(x)
+
+N <- nrow(x)
+J <- ncol(x)
+K <- ncol(y)
+
+stanInputData <- list(
+	N = N,
+	K = K,
+	J = J,
+	y = y,
+	x = x )
+
 fileNameRoot="stanOut/"
 
 source("mcmc/DBDA2E-utilities.R")
@@ -30,7 +49,7 @@ parameters {
 	vector<lower=0>[K] sigma[J] ;
 	
 	vector<lower=0>[J] tau ;
-real<lower=0> psi ;
+	real<lower=0> psi ;
 }
 
 transformed parameters {
@@ -54,7 +73,7 @@ model {
 	for (j in 1:J) {
 		// Sampling correlation and standard deviation
 		// and calculating covariante
-		Omega[j] ~ lkj_corr(1) ;
+		Omega[j] ~ lkj_corr(1) ; // K is 3 by definition of the matrix
 		
 		sigma[j] ~ cauchy(0, 2.5) ; // half cauchy due to constraint
 
@@ -86,17 +105,9 @@ model {
 # Translate model to C++ and compile to DSO:
 stanDso <- stan_model( model_code=modelString ) 
 
-# Specify data:
-N = 50 ; z = 10
-y = c(rep(1,z),rep(0,N-z))
-dataList = list(
-	y = y ,
-	N = N 
-)
-
 # Generate posterior sample:
 stanFit <- sampling( object=stanDso , 
-										 data = dataList , 
+										 data = stanInputData,
 										 chains = 3 ,
 										 iter = 1000 , 
 										 warmup = 200 , 
