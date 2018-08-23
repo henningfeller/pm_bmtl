@@ -24,7 +24,7 @@ mcmcSamples = mcmc.list( lapply( 1:ncol(stanFit) ,
 var <- "alpha[1]"
 
 diagMCMC(mcmcSamples, var,
-				 saveName = fileNameRoot, saveType = "eps" )
+				 saveName = "stanDiag/" )
 
 varValues <- c()
 for (i in 1:length(mcmcSamples)) { # for each chain

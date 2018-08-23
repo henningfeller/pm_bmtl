@@ -12,7 +12,7 @@ source("greekSimulation.R")
 source("themeLeuphana.R")
 
 #Set Number of patients
-n = 2000
+n = 1000
 
 
 inputData <- simulation_of_input_data(n)
@@ -31,16 +31,18 @@ inputVariables = colnames(stdInputData)[-1];
 targetVariables = c("STK", "AMI", "ARF")
 	
 
-# runningIdx <- 0
-# y <- matrix(0, nrow = n, ncol = targetVariables.n)
-# while( (sum(y[,1]) < 50) | 
-# 			  (sum(y[,2]) < 50) | 
-# 				 (sum(y[,3]) < 50) | 
-# 				  (sum(y[,1]) > 300)  | 
-# 				   (sum(y[,2]) > 300) | 
-# 				    (sum(y[,3]) > 300) ) {
-	# 
-	# runningIdx <- runningIdx + 1
+y <- matrix(0, nrow = n, ncol = targetVariables.n)
+
+
+runningIdx <- 0
+while( (sum(y[,1]) < 40) |
+			  (sum(y[,2]) < 40) |
+				 (sum(y[,3]) < 40) |
+				  (sum(y[,1]) > 200)  |
+				   (sum(y[,2]) > 200) |
+				    (sum(y[,3]) > 200) ) {
+
+runningIdx <- runningIdx + 1
 	
 					    	
 	model.parameters <- simulate_model_parameters(inputVariables,
@@ -63,8 +65,15 @@ targetVariables = c("STK", "AMI", "ARF")
 		}
 	}
 	
-	colnames(y) <- targetVariables
-	
+	sums <- apply(y,2,sum)
+	print(paste("Iteration: ", runningIdx, "(", paste(sums, collapse=" "), ")",sep=""))
+}
 
+colnames(y) <- targetVariables
+
+# merge data frames
 jointDataset <- cbind(inputData, y)
-write.csv2(jointDataset, file = file.choose())
+
+# and save
+write.csv2(jointDataset, file = "patientsData/patientsComplete.csv")
+save(model.parameters, file = "patientsData/model_parameters.Rdata")
