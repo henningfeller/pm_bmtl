@@ -11,11 +11,12 @@ source("standardizationFunctions.R")
 source("greekSimulation.R")
 source("themeLeuphana.R")
 
-#Set Number of patients
-n = 1000
 
-
-inputData <- simulation_of_input_data(n)
+# Generate small data set to ensure right amount of events
+N <- 1000
+eventMin <- 0.04*N
+eventMax <- 0.2*N
+inputData <- simulation_of_input_data(N)
 
 ########################################################
 # Data Standardization
@@ -35,12 +36,12 @@ y <- matrix(0, nrow = n, ncol = targetVariables.n)
 
 
 runningIdx <- 0
-while( (sum(y[,1]) < 40) |
-			  (sum(y[,2]) < 40) |
-				 (sum(y[,3]) < 40) |
-				  (sum(y[,1]) > 200)  |
-				   (sum(y[,2]) > 200) |
-				    (sum(y[,3]) > 200) ) {
+while( (sum(y[,1]) < eventMin) |
+			  (sum(y[,2]) < eventMin) |
+				 (sum(y[,3]) < eventMin) |
+				  (sum(y[,1]) > eventMax)  |
+				   (sum(y[,2]) > eventMax) |
+				    (sum(y[,3]) > eventMax) ) {
 
 runningIdx <- runningIdx + 1
 	
@@ -65,11 +66,39 @@ runningIdx <- runningIdx + 1
 		}
 	}
 	
+	colnames(y) <- targetVariables
+	
 	sums <- apply(y,2,sum)
 	print(paste("Iteration: ", runningIdx, "(", paste(sums, collapse=" "), ")",sep=""))
 }
 
+# Now right amount of adverse health events would be generated.
+# Generate new dataset
+N <- 20000
+inputData <- simulation_of_input_data(N)
+
+# standardize
+stdInputData <- standardize_mean0_var1(inputData)
+stdInputData <- one_hot_encoding(stdInputData)
+
+# alpha, beta and co are known
+# simulate y
+logit.theta <- matrix(NA, nrow = N, ncol = targetVariables.n)
+theta <- matrix(NA, nrow = N, ncol = targetVariables.n)
+y <- matrix(0, nrow = N, ncol = targetVariables.n)
+
+for (j in 1:N) { # patient
+	for (k in 1:targetVariables.n) { # outcome
+		logit.theta[j,k]<- alpha[k] + beta[,k] %*% as.numeric(stdInputData[j,-1])
+		theta[j,k] <- 1/(1+exp(-logit.theta[j,k]))
+		y[j,k] <- rbern(1, theta[j,k])
+	}
+}
+
 colnames(y) <- targetVariables
+
+# double checking
+apply(y,2,sum)
 
 # merge data frames
 jointDataset <- cbind(inputData, y)
